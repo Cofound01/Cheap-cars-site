@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manage — Cheap Cars for Sale Under $1500</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=IBM+Plex+Mono:wght@500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --asphalt: #1B1B1D;
+    --asphalt-2: #232326;
+    --paper: #F7F4EC;
+    --paper-dim: #EDE9DD;
+    --yellow: #F2B705;
+    --red: #C0392B;
+    --chrome: #8A8D91;
+    --ink: #1B1B1D;
+    --radius: 4px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    font-family:'Inter', sans-serif;
+    color:var(--ink);
+    background:var(--paper);
+    -webkit-font-smoothing:antialiased;
+    padding-bottom:60px;
+  }
+  a{color:inherit;}
+  .mono{font-family:'IBM Plex Mono', monospace;}
+  .wrap{max-width:640px; margin:0 auto; padding:0 18px;}
+
+  header.top{
+    background:var(--asphalt);
+    color:var(--paper);
+    padding:16px 18px;
+    display:flex; align-items:center; justify-content:space-between;
+    border-bottom:3px solid var(--yellow);
+    position:sticky; top:0; z-index:20;
+  }
+  header.top a.back{
+    color:var(--paper); text-decoration:none; font-size:13px; font-weight:600;
+  }
+  header.top h1{
+    font-family:'Archivo Black', sans-serif;
+    font-size:14px; text-transform:uppercase;
+  }
+
+  .lock-screen{
+    max-width:380px; margin:60px auto; padding:0 18px; text-align:center;
+  }
+  .lock-screen p{color:#5b5b5b; font-size:14.5px; margin-bottom:18px; line-height:1.5;}
+  .lock-screen input{
+    width:100%; padding:14px; border:1.5px solid #D9D5C8; border-radius:var(--radius);
+    font-size:18px; text-align:center; letter-spacing:3px; margin-bottom:12px;
+    font-family:'IBM Plex Mono', monospace;
+  }
+
+  .tabs{
+    display:flex; gap:6px; overflow-x:auto; padding:16px 18px 0;
+    -webkit-overflow-scrolling:touch;
+  }
+  .tab{
+    flex:0 0 auto; padding:10px 14px; font-size:13px; font-weight:700;
+    border:1.5px solid #D9D5C8; border-radius:var(--radius); cursor:pointer;
+    background:#fff; white-space:nowrap;
+  }
+  .tab.active{background:var(--yellow); border-color:var(--yellow); color:var(--asphalt);}
+
+  .panel{padding:20px 18px 40px; display:none;}
+  .panel.active{display:block;}
+
+  .field{margin-bottom:16px;}
+  .field label{
+    display:block; font-size:12px; font-weight:700; text-transform:uppercase;
+    letter-spacing:0.4px; color:#5b5b5b; margin-bottom:6px;
+  }
+  .field input, .field select, .field textarea{
+    width:100%; padding:12px; border:1.5px solid #D9D5C8; border-radius:var(--radius);
+    font-family:'Inter',sans-serif; font-size:14.5px; background:#fff;
+  }
+  .field textarea{min-height:90px; resize:vertical;}
+  .row2{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    padding:14px 20px; border-radius:var(--radius); font-weight:700; font-size:15px;
+    border:2px solid transparent; cursor:pointer; width:100%;
+  }
+  .btn-primary{background:var(--yellow); color:var(--asphalt);}
+  .btn-outline{background:transparent; border-color:#D9D5C8; color:var(--ink);}
+  .btn-danger{background:transparent; border-color:var(--red); color:var(--red); font-size:12px; padding:8px 12px; width:auto;}
+
+  .card{
+    background:#fff; border:1px solid #E3E0D4; border-radius:var(--radius);
+    padding:16px; margin-bottom:12px;
+  }
+  .card-row{display:flex; align-items:center; justify-content:space-between; gap:10px;}
+  .card-row b{display:block; font-size:14.5px;}
+  .card-row span{font-size:12px; color:var(--chrome); font-family:'IBM Plex Mono', monospace;}
+
+  .photo-inputs{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px;}
+  .photo-slot{
+    border:1.5px dashed #D9D5C8; border-radius:var(--radius); padding:10px;
+    text-align:center; font-size:12px; color:var(--chrome); position:relative; overflow:hidden;
+    aspect-ratio:1; display:flex; align-items:center; justify-content:center;
+  }
+  .photo-slot img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;}
+  .photo-slot input{position:absolute; inset:0; opacity:0; cursor:pointer;}
+
+  .status-msg{
+    padding:12px; border-radius:var(--radius); font-size:13.5px; margin-bottom:16px; display:none;
+  }
+  .status-msg.ok{background:#E7F3E5; color:#2E6B33; display:block;}
+  .status-msg.err{background:#FBE8E6; color:var(--red); display:block;}
+  .status-msg.loading{background:var(--paper-dim); color:#5b5b5b; display:block;}
+
+  .section-title{font-size:16px; font-weight:700; margin-bottom:14px;}
+  .helper{font-size:12.5px; color:var(--chrome); margin-top:-8px; margin-bottom:16px; line-height:1.5;}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <a class="back" href="https://claude.ai/public/artifacts/d4e8336e-5c81-4521-a059-296598cc114d" target="_blank" rel="noopener">← Back to site</a>
+  <h1>Dealer Dashboard</h1>
+  <span style="width:70px;"></span>
+</header>
+
+<div id="lockScreen" class="lock-screen">
+  <p>Enter the access code to manage the site.</p>
+  <input type="password" id="pinInput" placeholder="Access code" inputmode="numeric">
+  <button class="btn btn-primary" id="unlockBtn">Unlock</button>
+</div>
+
+<div id="dashboard" style="display:none;">
+  <div class="tabs">
+    <div class="tab active" data-panel="addCar">+ Add Vehicle</div>
+    <div class="tab" data-panel="manageCars">Current Lot</div>
+    <div class="tab" data-panel="settings">Site Settings</div>
+    <div class="tab" data-panel="reviews">Reviews</div>
+  </div>
+
+  <div class="wrap">
+
+    <div class="panel active" id="panel-addCar">
+      <div class="section-title">Post a new vehicle</div>
+      <div class="field">
+        <label for="mTitle">Vehicle (year + model)</label>
+        <input type="text" id="mTitle" placeholder="e.g. 2014 Honda Civic">
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label for="mPrice">Price ($)</label>
+          <input type="number" id="mPrice" placeholder="1295">
+        </div>
+        <div class="field">
+          <label for="mMiles">Mileage</label>
+          <input type="text" id="mMiles" placeholder="87,000 mi">
+        </div>
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label for="mTrans">Transmission</label>
+          <select id="mTrans"><option>Automatic</option><option>Manual</option></select>
+        </div>
+        <div class="field">
+          <label for="mBadge">Badge tag</label>
+          <input type="text" id="mBadge" placeholder="Just In / Low Miles">
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Photo links (up to 4, optional)</label>
+      </div>
+      <div class="field">
+        <input type="text" id="photoUrl1" placeholder="Photo 1 link (e.g. from imgur)">
+      </div>
+      <div class="field">
+        <input type="text" id="photoUrl2" placeholder="Photo 2 link (optional)">
+      </div>
+      <div class="field">
+        <input type="text" id="photoUrl3" placeholder="Photo 3 link (optional)">
+      </div>
+      <div class="field">
+        <input type="text" id="photoUrl4" placeholder="Photo 4 link (optional)">
+      </div>
+
+      <div id="addCarStatus" class="status-msg"></div>
+      <button class="btn btn-primary" id="addCarBtn">Post to Lot</button>
+    </div>
+
+    <div class="panel" id="panel-manageCars">
+      <div class="section-title">Current lot</div>
+      <div id="carList"></div>
+    </div>
+
+    <div class="panel" id="panel-settings">
+      <div class="section-title">Contact &amp; social</div>
+      <div class="field">
+        <label for="sEmail">Email</label>
+        <input type="email" id="sEmail" placeholder="you@example.com">
+      </div>
+      <div class="field">
+        <label for="sPhone">Phone</label>
+        <input type="tel" id="sPhone" placeholder="(000) 000-0000">
+      </div>
+      <div class="field">
+        <label for="sFollowers">Follower count (shown on homepage)</label>
+        <input type="text" id="sFollowers" placeholder="e.g. 1.1K">
+      </div>
+      <div class="field">
+        <label for="sFacebook">Facebook link</label>
+        <input type="text" id="sFacebook" placeholder="https://facebook.com/...">
+      </div>
+      <div class="field">
+        <label for="sInstagram">Instagram link</label>
+        <input type="text" id="sInstagram" placeholder="https://instagram.com/...">
+      </div>
+      <div class="field">
+        <label for="sTiktok">TikTok link (optional)</label>
+        <input type="text" id="sTiktok" placeholder="https://tiktok.com/@...">
+      </div>
+      <div id="settingsStatus" class="status-msg"></div>
+      <button class="btn btn-primary" id="saveSettingsBtn">Save Changes</button>
+    </div>
+
+    <div class="panel" id="panel-reviews">
+      <div class="section-title">Add a review</div>
+      <div class="field">
+        <label for="rName">Customer name</label>
+        <input type="text" id="rName" placeholder="e.g. James T.">
+      </div>
+      <div class="field">
+        <label for="rStars">Rating</label>
+        <select id="rStars">
+          <option value="5">★★★★★ (5)</option>
+          <option value="4">★★★★☆ (4)</option>
+          <option value="3">★★★☆☆ (3)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="rQuote">Review text</label>
+        <textarea id="rQuote" placeholder="What did they say about their experience?"></textarea>
+      </div>
+      <div id="addReviewStatus" class="status-msg"></div>
+      <button class="btn btn-primary" id="addReviewBtn">Add Review</button>
+
+      <p class="helper" style="margin-top:20px;">Homepage shows the 9 most recent reviews.</p>
+      <div class="section-title">Existing reviews</div>
+      <div id="reviewList"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxK3osBe6uQHfS4qskzt6QHT-MQJN6NNh2zLnSOzNy8a2spsIuZBEduH-SdGLVMqtPr/exec";
+  let PIN = "";
+  let cachedData = { inventory:[], reviews:[], settings:{} };
+
+  function escapeHtml(s){ return String(s || "").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+  function showStatus(id, type, text){
+    const el = document.getElementById(id);
+    el.className = "status-msg " + type;
+    el.textContent = text;
+  }
+  function clearStatus(id){
+    const el = document.getElementById(id);
+    el.className = "status-msg";
+    el.textContent = "";
+  }
+
+  // ---------- UNLOCK ----------
+  document.getElementById("unlockBtn").addEventListener("click", async ()=>{
+    const val = document.getElementById("pinInput").value.trim();
+    if(!val){ return; }
+    PIN = val;
+    document.getElementById("lockScreen").style.display = "none";
+    document.getElementById("dashboard").style.display = "block";
+    await refreshData();
+  });
+
+  // ---------- TABS ----------
+  document.querySelectorAll(".tab").forEach(tab=>{
+    tab.addEventListener("click", ()=>{
+      document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+      document.querySelectorAll(".panel").forEach(p=>p.classList.remove("active"));
+      tab.classList.add("active");
+      document.getElementById("panel-" + tab.getAttribute("data-panel")).classList.add("active");
+    });
+  });
+
+  // ---------- DATA ----------
+  async function refreshData(){
+    try{
+      const res = await fetch(APPS_SCRIPT_URL + "?_ts=" + Date.now());
+      cachedData = await res.json();
+    }catch(e){
+      cachedData = { inventory:[], reviews:[], settings:{} };
+    }
+    renderCarList();
+    fillSettings();
+    renderReviewList();
+  }
+
+  function renderCarList(){
+    const wrap = document.getElementById("carList");
+    const cars = cachedData.inventory || [];
+    if(!cars.length){
+      wrap.innerHTML = `<p class="helper">No vehicles posted yet.</p>`;
+      return;
+    }
+    wrap.innerHTML = cars.map(c => `
+      <div class="card">
+        <div class="card-row">
+          <div>
+            <b>${escapeHtml(c.title)}</b>
+            <span>$${Number(c.price).toLocaleString()} · ${escapeHtml(c.miles)}</span>
+          </div>
+          <button class="btn btn-danger" data-id="${escapeHtml(c.id)}">Remove</button>
+        </div>
+      </div>
+    `).join("");
+    wrap.querySelectorAll(".btn-danger").forEach(btn=>{
+      btn.addEventListener("click", async ()=>{
+        btn.textContent = "Removing...";
+        await postAction({action:"deleteCar", id: btn.getAttribute("data-id")});
+        await refreshData();
+      });
+    });
+  }
+
+  function fillSettings(){
+    const s = cachedData.settings || {};
+    document.getElementById("sEmail").value = s.email || "";
+    document.getElementById("sPhone").value = s.phone || "";
+    document.getElementById("sFollowers").value = s.followers || "";
+    document.getElementById("sFacebook").value = s.facebook || "";
+    document.getElementById("sInstagram").value = s.instagram || "";
+    document.getElementById("sTiktok").value = s.tiktok || "";
+  }
+
+  function renderReviewList(){
+    const wrap = document.getElementById("reviewList");
+    const reviews = cachedData.reviews || [];
+    if(!reviews.length){
+      wrap.innerHTML = `<p class="helper">No reviews yet.</p>`;
+      return;
+    }
+    wrap.innerHTML = reviews.map(r => `
+      <div class="card">
+        <div class="card-row">
+          <div>
+            <b>${escapeHtml(r.name)} — ${"★".repeat(Number(r.stars)||5)}</b>
+            <span>${escapeHtml((r.quote||"").slice(0,50))}${(r.quote||"").length>50?"...":""}</span>
+          </div>
+          <button class="btn btn-danger" data-id="${escapeHtml(r.id)}">Remove</button>
+        </div>
+      </div>
+    `).join("");
+    wrap.querySelectorAll(".btn-danger").forEach(btn=>{
+      btn.addEventListener("click", async ()=>{
+        btn.textContent = "Removing...";
+        await postAction({action:"deleteReview", id: btn.getAttribute("data-id")});
+        await refreshData();
+      });
+    });
+  }
+
+  // ---------- POST HELPER ----------
+  async function postAction(payload){
+    payload.pin = PIN;
+    try{
+      const res = await fetch(APPS_SCRIPT_URL, {
+        method: "POST",
+        body: JSON.stringify(payload)
+      });
+      return await res.json();
+    }catch(e){
+      return {ok:false, error:"Network error"};
+    }
+  }
+
+  // ---------- ADD CAR ----------
+  document.getElementById("addCarBtn").addEventListener("click", async ()=>{
+    const title = document.getElementById("mTitle").value.trim();
+    const price = document.getElementById("mPrice").value.trim();
+    if(!title || !price){
+      showStatus("addCarStatus", "err", "Please fill in at least the vehicle name and price.");
+      return;
+    }
+    showStatus("addCarStatus", "loading", "Posting...");
+    const photos = [
+      document.getElementById("photoUrl1").value.trim(),
+      document.getElementById("photoUrl2").value.trim(),
+      document.getElementById("photoUrl3").value.trim(),
+      document.getElementById("photoUrl4").value.trim()
+    ].filter(Boolean);
+    const result = await postAction({
+      action:"addCar",
+      title, price,
+      miles: document.getElementById("mMiles").value.trim(),
+      trans: document.getElementById("mTrans").value,
+      badge: document.getElementById("mBadge").value.trim(),
+      photos
+    });
+    if(result.ok){
+      showStatus("addCarStatus", "ok", "Posted! It'll appear on the site shortly.");
+      document.getElementById("mTitle").value = "";
+      document.getElementById("mPrice").value = "";
+      document.getElementById("mMiles").value = "";
+      document.getElementById("mBadge").value = "";
+      document.getElementById("photoUrl1").value = "";
+      document.getElementById("photoUrl2").value = "";
+      document.getElementById("photoUrl3").value = "";
+      document.getElementById("photoUrl4").value = "";
+      await refreshData();
+    }else{
+      showStatus("addCarStatus", "err", result.error || "Something went wrong. Check the access code and try again.");
+    }
+  });
+
+  // ---------- SAVE SETTINGS ----------
+  document.getElementById("saveSettingsBtn").addEventListener("click", async ()=>{
+    showStatus("settingsStatus", "loading", "Saving...");
+    const result = await postAction({
+      action:"updateSettings",
+      settings:{
+        email: document.getElementById("sEmail").value.trim(),
+        phone: document.getElementById("sPhone").value.trim(),
+        followers: document.getElementById("sFollowers").value.trim(),
+        facebook: document.getElementById("sFacebook").value.trim(),
+        instagram: document.getElementById("sInstagram").value.trim(),
+        tiktok: document.getElementById("sTiktok").value.trim()
+      }
+    });
+    if(result.ok){
+      showStatus("settingsStatus", "ok", "Saved! Changes will show on the site shortly.");
+    }else{
+      showStatus("settingsStatus", "err", result.error || "Something went wrong. Check the access code and try again.");
+    }
+  });
+
+  // ---------- ADD REVIEW ----------
+  document.getElementById("addReviewBtn").addEventListener("click", async ()=>{
+    const name = document.getElementById("rName").value.trim();
+    const quote = document.getElementById("rQuote").value.trim();
+    if(!name || !quote){
+      showStatus("addReviewStatus", "err", "Please fill in the customer name and review text.");
+      return;
+    }
+    showStatus("addReviewStatus", "loading", "Adding...");
+    const result = await postAction({
+      action:"addReview",
+      name, quote,
+      stars: document.getElementById("rStars").value
+    });
+    if(result.ok){
+      showStatus("addReviewStatus", "ok", "Review added!");
+      document.getElementById("rName").value = "";
+      document.getElementById("rQuote").value = "";
+      await refreshData();
+    }else{
+      showStatus("addReviewStatus", "err", result.error || "Something went wrong. Check the access code and try again.");
+    }
+  });
+</script>
+
+</body>
+</html>
