@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cheap Cars for Sale Under $1500</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=IBM+Plex+Mono:wght@500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --asphalt: #1B1B1D;
+    --asphalt-2: #232326;
+    --paper: #F7F4EC;
+    --paper-dim: #EDE9DD;
+    --yellow: #F2B705;
+    --red: #C0392B;
+    --chrome: #8A8D91;
+    --ink: #1B1B1D;
+    --radius: 4px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Inter', sans-serif;
+    color:var(--ink);
+    background:var(--paper);
+    -webkit-font-smoothing:antialiased;
+  }
+  img{max-width:100%; display:block;}
+  a{color:inherit; text-decoration:none;}
+  .mono{font-family:'IBM Plex Mono', monospace;}
+  .display{font-family:'Archivo Black', sans-serif; text-transform:uppercase; letter-spacing:0.5px;}
+  .wrap{max-width:1100px; margin:0 auto; padding:0 20px;}
+
+  /* reduced motion */
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important; transition:none !important;}
+  }
+
+  /* ---------- NAV ---------- */
+  header.site-nav{
+    position:sticky; top:0; z-index:50;
+    background:var(--asphalt);
+    border-bottom:3px solid var(--yellow);
+  }
+  .nav-inner{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:14px 20px;
+    max-width:1100px; margin:0 auto;
+  }
+  .brand{
+    color:var(--paper);
+    font-family:'Archivo Black', sans-serif;
+    font-size:15px;
+    line-height:1.15;
+    text-transform:uppercase;
+    letter-spacing:0.3px;
+  }
+  .brand span{color:var(--yellow);}
+  .nav-call{
+    background:var(--yellow);
+    color:var(--asphalt);
+    font-weight:700;
+    font-size:13px;
+    padding:9px 14px;
+    border-radius:var(--radius);
+    white-space:nowrap;
+  }
+  .nav-manage{
+    background:transparent;
+    border:1.5px solid #4a4a4d;
+    color:#C6C3B9;
+    font-weight:600;
+    font-size:12px;
+    padding:8px 10px;
+    border-radius:var(--radius);
+    white-space:nowrap;
+    cursor:pointer;
+    font-family:'Inter', sans-serif;
+  }
+  .nav-manage:hover{border-color:var(--yellow); color:var(--yellow);}
+
+  /* ---------- MANAGE PANEL ---------- */
+  .manage-overlay{
+    position:fixed; inset:0;
+    background:rgba(27,27,29,0.75);
+    z-index:200;
+    display:none;
+    align-items:flex-start;
+    justify-content:center;
+    overflow-y:auto;
+    padding:20px 14px 60px;
+  }
+  .manage-overlay.open{display:flex;}
+  .manage-panel{
+    background:#fff;
+    border-radius:var(--radius);
+    max-width:560px;
+    width:100%;
+    margin-top:20px;
+    overflow:hidden;
+  }
+  .manage-head{
+    background:var(--asphalt);
+    color:var(--paper);
+    padding:16px 20px;
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .manage-head h3{font-size:15px; font-family:'Archivo Black', sans-serif; text-transform:uppercase;}
+  .manage-close{
+    background:transparent; border:none; color:var(--paper);
+    font-size:20px; cursor:pointer; line-height:1;
+    padding:4px 8px;
+  }
+  .manage-body{padding:20px;}
+  .manage-lock{
+    text-align:center;
+    padding:10px 0 4px;
+  }
+  .manage-lock p{font-size:13.5px; color:#5b5b5b; margin-bottom:14px; line-height:1.5;}
+  .manage-lock input{
+    width:100%;
+    padding:12px;
+    border:1.5px solid #D9D5C8;
+    border-radius:var(--radius);
+    font-size:16px;
+    text-align:center;
+    letter-spacing:2px;
+    margin-bottom:12px;
+    font-family:'IBM Plex Mono', monospace;
+  }
+  .manage-tabs{
+    display:flex; gap:6px;
+    margin-bottom:18px;
+  }
+  .manage-tab{
+    flex:1;
+    padding:9px;
+    text-align:center;
+    font-size:12.5px;
+    font-weight:700;
+    border:1.5px solid #D9D5C8;
+    border-radius:var(--radius);
+    cursor:pointer;
+    background:#FBFAF6;
+  }
+  .manage-tab.active{background:var(--yellow); border-color:var(--yellow); color:var(--asphalt);}
+  .m-field{margin-bottom:14px;}
+  .m-field label{
+    display:block; font-size:12px; font-weight:700; text-transform:uppercase;
+    letter-spacing:0.4px; color:#5b5b5b; margin-bottom:6px;
+  }
+  .m-field input, .m-field select{
+    width:100%; padding:11px 12px; border:1.5px solid #D9D5C8;
+    border-radius:var(--radius); font-family:'Inter',sans-serif; font-size:14px;
+    background:#FBFAF6;
+  }
+  .m-row{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+  .manage-list-item{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:12px; border:1px solid #E3E0D4; border-radius:var(--radius);
+    margin-bottom:8px; font-size:13.5px;
+  }
+  .manage-list-item b{display:block; font-size:14px;}
+  .manage-list-item span{font-size:12px; color:var(--chrome); font-family:'IBM Plex Mono', monospace;}
+  .m-del{
+    background:transparent; border:1.5px solid var(--red); color:var(--red);
+    font-size:11px; font-weight:700; padding:6px 9px; border-radius:2px; cursor:pointer;
+    flex-shrink:0;
+  }
+  .m-del:hover{background:var(--red); color:#fff;}
+  .manage-export{
+    background:var(--paper-dim);
+    border:1px dashed #C9C5B6;
+    border-radius:var(--radius);
+    padding:14px;
+    font-size:12.5px;
+    color:#5b5b5b;
+    line-height:1.5;
+    margin-top:6px;
+  }
+  .manage-export textarea{
+    width:100%; margin-top:10px; min-height:100px;
+    font-family:'IBM Plex Mono', monospace; font-size:11.5px;
+    padding:10px; border:1px solid #D9D5C8; border-radius:var(--radius);
+    background:#fff;
+  }
+  .sort-bar{
+    display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+    margin-bottom:20px;
+  }
+  .sort-bar label{font-size:12.5px; font-weight:700; color:#5b5b5b;}
+  .sort-bar select{
+    padding:9px 10px; border:1.5px solid #D9D5C8; border-radius:var(--radius);
+    font-family:'Inter',sans-serif; font-size:13.5px; background:#fff;
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    background:
+      linear-gradient(180deg, rgba(27,27,29,0.88), rgba(27,27,29,0.95)),
+      repeating-linear-gradient(115deg, #232326 0px, #232326 2px, #1B1B1D 2px, #1B1B1D 40px);
+    color:var(--paper);
+    padding:56px 0 44px;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero-tag{
+    display:inline-flex; align-items:center; gap:8px;
+    background:var(--red);
+    color:#fff;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px; font-weight:600;
+    padding:6px 10px;
+    border-radius:2px;
+    margin-bottom:18px;
+    transform:rotate(-1deg);
+  }
+  .hero h1{
+    font-size:clamp(32px, 8vw, 52px);
+    line-height:1.04;
+    margin-bottom:16px;
+    max-width:11ch;
+  }
+  .hero h1 .accent{color:var(--yellow);}
+  .hero p.lede{
+    font-size:16px;
+    line-height:1.55;
+    color:#D8D5CC;
+    max-width:46ch;
+    margin-bottom:28px;
+  }
+  .hero-ctas{
+    display:flex; flex-wrap:wrap; gap:12px;
+  }
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    padding:14px 22px;
+    border-radius:var(--radius);
+    font-weight:700;
+    font-size:15px;
+    border:2px solid transparent;
+    cursor:pointer;
+    transition:transform 0.15s ease, background 0.15s ease;
+  }
+  .btn:active{transform:scale(0.98);}
+  .btn-primary{
+    background:var(--yellow);
+    color:var(--asphalt);
+  }
+  .btn-primary:hover{background:#ffc824;}
+  .btn-outline{
+    background:transparent;
+    border-color:var(--paper);
+    color:var(--paper);
+  }
+  .btn-outline:hover{background:rgba(247,244,236,0.08);}
+  .btn:focus-visible{outline:3px solid var(--yellow); outline-offset:2px;}
+
+  .hero-stats{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:14px;
+    margin-top:38px;
+    padding-top:24px;
+    border-top:1px solid rgba(247,244,236,0.18);
+  }
+  .hero-stats div b{
+    display:block;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:22px;
+    color:var(--yellow);
+  }
+  .hero-stats div span{
+    font-size:12px;
+    color:var(--chrome);
+  }
+
+  /* ---------- SECTION HEADERS ---------- */
+  .section{padding:52px 0;}
+  .section-head{
+    margin-bottom:30px;
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    font-weight:600;
+    color:var(--red);
+    letter-spacing:1px;
+    margin-bottom:8px;
+    display:block;
+  }
+  .section-head h2{
+    font-size:clamp(24px, 5vw, 32px);
+    line-height:1.15;
+  }
+  .section-head p{
+    color:#5b5b5b;
+    margin-top:10px;
+    max-width:52ch;
+    font-size:15px;
+    line-height:1.5;
+  }
+
+  /* ---------- INVENTORY: PRICE-STICKER CARDS ---------- */
+  .inventory{background:var(--paper);}
+  .grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:22px;
+  }
+  @media(min-width:640px){
+    .grid{grid-template-columns:repeat(2, 1fr);}
+  }
+  @media(min-width:940px){
+    .grid{grid-template-columns:repeat(3, 1fr);}
+  }
+
+  .sticker-card{
+    background:#fff;
+    border-radius:var(--radius);
+    box-shadow:0 1px 0 rgba(0,0,0,0.05), 0 8px 20px -12px rgba(0,0,0,0.35);
+    overflow:hidden;
+    position:relative;
+    border:1px solid #E3E0D4;
+  }
+  .sticker-photo{
+    aspect-ratio:4/3;
+    background:
+      linear-gradient(135deg, #d9d5c8 0%, #c7c2b1 100%);
+    position:relative;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .sticker-photo svg{width:46%; opacity:0.55;}
+  .badge{
+    position:absolute; top:10px; left:10px;
+    background:var(--red);
+    color:#fff;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px; font-weight:600;
+    padding:5px 9px;
+    border-radius:2px;
+    transform:rotate(-2deg);
+    box-shadow:0 2px 6px rgba(0,0,0,0.25);
+  }
+  .sticker-body{
+    padding:16px 16px 18px;
+  }
+  .sticker-body h3{
+    font-size:17px;
+    font-weight:700;
+    margin-bottom:6px;
+  }
+  .sticker-meta{
+    display:flex; gap:12px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--chrome);
+    margin-bottom:14px;
+    flex-wrap:wrap;
+  }
+  .sticker-meta span{white-space:nowrap;}
+  .sticker-price-row{
+    display:flex; align-items:flex-end; justify-content:space-between;
+    border-top:1px dashed #D9D5C8;
+    padding-top:12px;
+  }
+  .sticker-price{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:26px;
+    font-weight:600;
+    color:var(--asphalt);
+  }
+  .sticker-price sup{font-size:13px; color:var(--chrome); font-weight:500;}
+  .sticker-cta{
+    font-size:12px;
+    font-weight:700;
+    color:var(--red);
+    border:1.5px solid var(--red);
+    padding:7px 10px;
+    border-radius:2px;
+  }
+  .sticker-cta:hover{background:var(--red); color:#fff;}
+
+  .inventory-note{
+    margin-top:24px;
+    font-size:13px;
+    color:var(--chrome);
+    text-align:center;
+  }
+
+  /* ---------- FINANCING / TRUST ---------- */
+  .financing{
+    background:var(--asphalt);
+    color:var(--paper);
+  }
+  .financing .eyebrow{color:var(--yellow);}
+  .fin-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:16px;
+    margin-top:10px;
+  }
+  @media(min-width:760px){
+    .fin-grid{grid-template-columns:repeat(3, 1fr);}
+  }
+  .fin-card{
+    background:var(--asphalt-2);
+    border:1px solid #333336;
+    border-radius:var(--radius);
+    padding:22px;
+  }
+  .fin-card .num{
+    font-family:'IBM Plex Mono', monospace;
+    color:var(--yellow);
+    font-size:13px;
+    margin-bottom:10px;
+  }
+  .fin-card h3{
+    font-size:17px;
+    margin-bottom:8px;
+  }
+  .fin-card p{
+    font-size:14px;
+    color:#C6C3B9;
+    line-height:1.55;
+  }
+
+  /* ---------- REVIEWS ---------- */
+  .reviews{background:var(--paper);}
+  .review-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:18px;
+  }
+  @media(min-width:760px){
+    .review-grid{grid-template-columns:repeat(3, 1fr);}
+  }
+  .review-card{
+    background:#fff;
+    border:1px solid #E3E0D4;
+    border-radius:var(--radius);
+    padding:22px;
+    position:relative;
+    box-shadow:0 8px 20px -14px rgba(0,0,0,0.3);
+  }
+  .review-stars{
+    color:var(--yellow);
+    font-size:15px;
+    letter-spacing:2px;
+    margin-bottom:12px;
+  }
+  .review-quote{
+    font-size:14.5px;
+    line-height:1.6;
+    color:#333;
+    margin-bottom:18px;
+  }
+  .review-who{
+    display:flex; align-items:center; gap:10px;
+    border-top:1px dashed #D9D5C8;
+    padding-top:14px;
+  }
+  .review-avatar{
+    width:36px; height:36px; border-radius:50%;
+    background:var(--asphalt);
+    color:var(--yellow);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Archivo Black', sans-serif;
+    font-size:13px;
+    flex-shrink:0;
+  }
+  .review-who div b{display:block; font-size:13.5px;}
+  .review-who div span{font-size:12px; color:var(--chrome);}
+  .review-summary{
+    display:flex; align-items:center; gap:10px;
+    margin-top:-4px;
+    margin-bottom:24px;
+  }
+  .review-summary .big-stars{color:var(--yellow); font-size:18px; letter-spacing:2px;}
+  .review-summary .count{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+    color:var(--chrome);
+  }
+  .review-note{
+    margin-top:22px;
+    font-size:13px;
+    color:var(--chrome);
+    text-align:center;
+  }
+
+  /* ---------- CONTACT ---------- */
+  .contact{background:var(--paper-dim);}
+  .contact-shell{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:30px;
+  }
+  @media(min-width:860px){
+    .contact-shell{grid-template-columns:1fr 1fr; align-items:start;}
+  }
+  .contact-info h2{
+    font-size:clamp(22px, 5vw, 28px);
+    margin-bottom:14px;
+  }
+  .contact-info p{
+    color:#5b5b5b;
+    font-size:15px;
+    line-height:1.6;
+    margin-bottom:22px;
+    max-width:44ch;
+  }
+  .contact-methods a{
+    display:flex; align-items:center; gap:12px;
+    background:#fff;
+    border:1px solid #E3E0D4;
+    border-radius:var(--radius);
+    padding:14px 16px;
+    margin-bottom:10px;
+    font-weight:600;
+    font-size:14px;
+  }
+  .contact-methods a:hover{border-color:var(--yellow);}
+  .icon-circle{
+    width:34px; height:34px; border-radius:50%;
+    background:var(--yellow);
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+    font-size:16px;
+  }
+
+  form.inquiry{
+    background:#fff;
+    border:1px solid #E3E0D4;
+    border-radius:var(--radius);
+    padding:24px;
+  }
+  form.inquiry .field{margin-bottom:16px;}
+  form.inquiry label{
+    display:block;
+    font-size:12px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:0.4px;
+    color:#5b5b5b;
+    margin-bottom:6px;
+  }
+  form.inquiry input,
+  form.inquiry select,
+  form.inquiry textarea{
+    width:100%;
+    padding:12px 12px;
+    border:1.5px solid #D9D5C8;
+    border-radius:var(--radius);
+    font-family:'Inter', sans-serif;
+    font-size:14px;
+    background:#FBFAF6;
+  }
+  form.inquiry input:focus,
+  form.inquiry select:focus,
+  form.inquiry textarea:focus{
+    outline:2px solid var(--yellow);
+    outline-offset:1px;
+    border-color:var(--yellow);
+  }
+  form.inquiry textarea{resize:vertical; min-height:90px;}
+  .form-note{
+    font-size:12px;
+    color:var(--chrome);
+    margin-top:6px;
+  }
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    background:var(--asphalt);
+    color:#9C9A92;
+    padding:28px 0;
+    font-size:13px;
+  }
+  .footer-inner{
+    display:flex; flex-wrap:wrap; gap:10px;
+    align-items:center; justify-content:space-between;
+  }
+  footer .brand-foot{
+    color:var(--paper);
+    font-family:'Archivo Black', sans-serif;
+    font-size:13px;
+    text-transform:uppercase;
+  }
+</style>
+</head>
+<body>
+
+<header class="site-nav">
+  <div class="nav-inner">
+    <div class="brand">Cheap Cars<br>for Sale <span>Under $1500</span></div>
+    <div style="display:flex; gap:8px; align-items:center;">
+      <a class="nav-manage" href="https://claude.ai/public/artifacts/1a61c591-f888-43df-a840-d69db7faef0e" style="text-decoration:none; display:inline-flex; align-items:center;" target="_blank" rel="noopener">⚙ Manage</a>
+      <a class="nav-call" id="navCall" href="tel:+10000000000">Call Now</a>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <span class="hero-tag">✓ In-house financing · all credit types</span>
+    <h1>Putting you in the <span class="accent">driver's seat</span> of your dreams.</h1>
+    <p class="lede">Over 10 years matching drivers with vehicles that fit their lifestyle and their budget. Real cars, honest prices, no runaround.</p>
+    <div class="hero-ctas">
+      <a class="btn btn-primary" href="#inventory">View Inventory</a>
+      <a class="btn btn-outline" href="#contact">Ask About Financing</a>
+    </div>
+    <div class="hero-stats">
+      <div><b>10+</b><span>Years in the industry</span></div>
+      <div><b id="followerStat">1.1K</b><span>Followers &amp; counting</span></div>
+      <div><b>$1500</b><span>Starting under</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="section inventory" id="inventory">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Current Lot</span>
+      <h2>Browse what's on the lot</h2>
+      <p>Placeholder listings below — swap in real photos, prices, and mileage for each vehicle before this goes live.</p>
+    </div>
+
+    <p id="inventoryStatus" style="font-size:12.5px;color:var(--chrome);margin-bottom:14px;"></p>
+    <div class="sort-bar">
+      <label for="sortSelect">Sort:</label>
+      <select id="sortSelect">
+        <option value="default">Newest first</option>
+        <option value="low">Price: Low to High</option>
+        <option value="high">Price: High to Low</option>
+      </select>
+    </div>
+
+    <div class="grid" id="carGrid"></div>
+    <p class="inventory-note">More vehicles added weekly — call or message for the full lot.</p>
+  </div>
+</section>
+
+<section class="section financing">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">How It Works</span>
+      <h2>Buying a car should be a success</h2>
+    </div>
+    <div class="fin-grid">
+      <div class="fin-card">
+        <div class="num mono">01</div>
+        <h3>Pick your vehicle</h3>
+        <p>Browse the lot above or call to ask what's arriving this week.</p>
+      </div>
+      <div class="fin-card">
+        <div class="num mono">02</div>
+        <h3>Talk financing</h3>
+        <p>In-house financing available — all credit types welcome, no runaround.</p>
+      </div>
+      <div class="fin-card">
+        <div class="num mono">03</div>
+        <h3>Drive away</h3>
+        <p>Finish paperwork and get in the driver's seat the same day.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section reviews" id="reviews">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Trust</span>
+      <h2>What drivers are saying</h2>
+      <p>Real feedback from customers — updated by the dealer directly.</p>
+    </div>
+    <div class="review-summary" id="reviewSummary">
+      <span class="big-stars">★★★★★</span>
+      <span class="count mono">Based on customer reviews</span>
+    </div>
+
+    <div class="review-grid" id="reviewGrid"></div>
+    <p class="review-note" id="reviewNote" style="display:none;">Have a review from a happy customer? Ask your dealer to add it via the Manage panel.</p>
+  </div>
+</section>
+
+<section class="section contact" id="contact">
+  <div class="wrap">
+    <div class="contact-shell">
+      <div class="contact-info">
+        <span class="eyebrow">Get In Touch</span>
+        <h2>Ask about a car or financing</h2>
+        <p>Reach out by phone or email — or send the quick form and we'll get back to you about the vehicle you're interested in.</p>
+        <div class="contact-methods" id="contactMethods">
+          <a href="tel:+10000000000" id="phoneLink"><span class="icon-circle">📞</span> Call or text: (000) 000-0000</a>
+          <a href="mailto:deliverytransportagency@gmail.com" id="emailLink"><span class="icon-circle">✉️</span> deliverytransportagency@gmail.com</a>
+        </div>
+        <div class="contact-methods" id="socialLinks" style="margin-top:4px;"></div>
+      </div>
+
+      <form class="inquiry" id="inquiryForm" action="mailto:deliverytransportagency@gmail.com" method="post" enctype="text/plain">
+        <div class="field">
+          <label for="name">Name</label>
+          <input type="text" id="name" name="Name" required>
+        </div>
+        <div class="field">
+          <label for="phone">Phone</label>
+          <input type="tel" id="phone" name="Phone" required>
+        </div>
+        <div class="field">
+          <label for="car">Vehicle you're interested in</label>
+          <input type="text" id="car" name="Vehicle" placeholder="e.g. 2014 Sedan — $1,295">
+        </div>
+        <div class="field">
+          <label for="message">Message</label>
+          <textarea id="message" name="Message" placeholder="Ask about financing, availability, or a test drive..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%;">Send Inquiry</button>
+        <p class="form-note">This opens your email app to send the message directly.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap footer-inner">
+    <div class="brand-foot">Cheap Cars for Sale Under $1500</div>
+    <div>© 2026 · Managed via the dealer dashboard</div>
+  </div>
+</footer>
+
+<script>
+  // ---------- APPS SCRIPT BACKEND ----------
+  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxK3osBe6uQHfS4qskzt6QHT-MQJN6NNh2zLnSOzNy8a2spsIuZBEduH-SdGLVMqtPr/exec";
+
+  const defaultCars = [
+    {id:"1", title:"2014 Sedan — Model Name", price:1295, miles:"87,000 mi", trans:"Automatic", badge:"Just In", photo1:"", photo2:"", photo3:"", photo4:""},
+    {id:"2", title:"2012 Hatchback — Model Name", price:999, miles:"102,400 mi", trans:"Manual", badge:"Financing OK", photo1:"", photo2:"", photo3:"", photo4:""},
+    {id:"3", title:"2015 SUV — Model Name", price:1450, miles:"64,900 mi", trans:"Automatic", badge:"Low Miles", photo1:"", photo2:"", photo3:"", photo4:""}
+  ];
+
+  let cars = defaultCars.slice();
+  let reviews = [];
+  let settings = {};
+
+  const carSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="#8A8D91" stroke-width="1.4"><path d="M3 13l1.5-4.5A2 2 0 0 1 6.4 7h11.2a2 2 0 0 1 1.9 1.5L21 13M3 13v4a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-1h12v1a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-4M3 13h18M6.5 17.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Zm11 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"/></svg>`;
+
+  async function loadData(){
+    try{
+      const res = await fetch(APPS_SCRIPT_URL + "?_ts=" + Date.now());
+      if(!res.ok) throw new Error("fetch failed");
+      const data = await res.json();
+      cars = (data.inventory && data.inventory.length) ? data.inventory : defaultCars.slice();
+      reviews = data.reviews || [];
+      settings = data.settings || {};
+    }catch(e){
+      cars = defaultCars.slice();
+      reviews = [];
+      settings = {};
+      const note = document.getElementById("inventoryStatus");
+      if(note) note.textContent = "Showing sample listings — live inventory couldn't load right now.";
+    }
+    renderCars();
+    renderReviews();
+    applySettings();
+  }
+
+  function escapeHtml(s){ return String(s || "").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+  function escapeAttr(s){ return escapeHtml(s); }
+
+  function renderCars(){
+    const grid = document.getElementById("carGrid");
+    if(!grid) return;
+    const sortVal = document.getElementById("sortSelect") ? document.getElementById("sortSelect").value : "default";
+    let list = cars.slice();
+    if(sortVal === "low") list.sort((a,b)=> a.price - b.price);
+    if(sortVal === "high") list.sort((a,b)=> b.price - a.price);
+
+    grid.innerHTML = list.map(car => {
+      const photos = [car.photo1, car.photo2, car.photo3, car.photo4].filter(Boolean);
+      const mainPhoto = photos[0] || "";
+      const cardId = "car_" + car.id;
+      const thumbs = photos.length > 1 ? `
+        <div style="display:flex; gap:5px; padding:8px 8px 0;">
+          ${photos.map((p,i) => `<img src="${escapeAttr(p)}" data-target="${cardId}" data-src="${escapeAttr(p)}" class="thumb-img" style="width:38px;height:38px;object-fit:cover;border-radius:2px;cursor:pointer;border:1.5px solid ${i===0?'var(--yellow)':'#E3E0D4'};">`).join("")}
+        </div>` : "";
+
+      return `
+      <div class="sticker-card">
+        <div class="sticker-photo" id="${cardId}">
+          ${car.badge ? `<span class="badge">${escapeHtml(car.badge)}</span>` : ""}
+          ${mainPhoto
+            ? `<img src="${escapeAttr(mainPhoto)}" alt="${escapeAttr(car.title)}" style="width:100%;height:100%;object-fit:cover;">`
+            : carSvg}
+        </div>
+        ${thumbs}
+        <div class="sticker-body">
+          <h3>${escapeHtml(car.title)}</h3>
+          <div class="sticker-meta">
+            <span class="mono">${escapeHtml(car.miles)}</span>
+            <span class="mono">${escapeHtml(car.trans)}</span>
+          </div>
+          <div class="sticker-price-row">
+            <div class="sticker-price"><sup>$</sup>${Number(car.price).toLocaleString()}</div>
+            <a class="sticker-cta" href="#contact">Inquire</a>
+          </div>
+        </div>
+      </div>
+    `;
+    }).join("");
+
+    grid.querySelectorAll(".thumb-img").forEach(img => {
+      img.addEventListener("click", () => {
+        const target = document.getElementById(img.getAttribute("data-target"));
+        const src = img.getAttribute("data-src");
+        if(target){
+          const mainImg = target.querySelector("img");
+          if(mainImg) mainImg.src = src;
+        }
+        img.parentElement.querySelectorAll(".thumb-img").forEach(t => t.style.borderColor = "#E3E0D4");
+        img.style.borderColor = "var(--yellow)";
+      });
+    });
+  }
+
+  function renderReviews(){
+    const grid = document.getElementById("reviewGrid");
+    const note = document.getElementById("reviewNote");
+    if(!grid) return;
+
+    const list = reviews.length ? reviews : [
+      {name:"Customer Name", stars:5, quote:"Got approved same day and drove off in something reliable. No pressure, no runaround."},
+      {name:"Customer Name", stars:5, quote:"Honest about the car's condition upfront. Exactly what I needed for the price."},
+      {name:"Customer Name", stars:5, quote:"Financing worked with my credit when other places turned me down. Would recommend."}
+    ];
+    if(note) note.style.display = reviews.length ? "none" : "block";
+
+    grid.innerHTML = list.map(r => {
+      const stars = "★".repeat(Number(r.stars) || 5) + "☆".repeat(5 - (Number(r.stars) || 5));
+      const initial = (r.name || "C").trim().charAt(0).toUpperCase();
+      return `
+      <div class="review-card">
+        <div class="review-stars">${stars}</div>
+        <p class="review-quote">"${escapeHtml(r.quote)}"</p>
+        <div class="review-who">
+          <div class="review-avatar">${escapeHtml(initial)}</div>
+          <div><b>${escapeHtml(r.name || "Customer")}</b><span>Verified buyer</span></div>
+        </div>
+      </div>`;
+    }).join("");
+  }
+
+  function applySettings(){
+    if(settings.email){
+      const link = document.getElementById("emailLink");
+      if(link){ link.href = "mailto:" + settings.email; link.innerHTML = `<span class="icon-circle">✉️</span> ${escapeHtml(settings.email)}`; }
+      const form = document.getElementById("inquiryForm");
+      if(form) form.action = "mailto:" + settings.email;
+    }
+    if(settings.phone){
+      const link = document.getElementById("phoneLink");
+      const telHref = "tel:" + String(settings.phone).replace(/[^0-9+]/g, "");
+      if(link){ link.href = telHref; link.innerHTML = `<span class="icon-circle">📞</span> Call or text: ${escapeHtml(settings.phone)}`; }
+      const navCall = document.getElementById("navCall");
+      if(navCall) navCall.href = telHref;
+    }
+    if(settings.followers){
+      const stat = document.getElementById("followerStat");
+      if(stat) stat.textContent = settings.followers;
+    }
+
+    const socialWrap = document.getElementById("socialLinks");
+    if(socialWrap){
+      const platforms = [
+        {key:"facebook", label:"Facebook", icon:"📘"},
+        {key:"instagram", label:"Instagram", icon:"📷"},
+        {key:"tiktok", label:"TikTok", icon:"🎵"}
+      ];
+      const links = platforms.filter(p => settings[p.key]);
+      socialWrap.innerHTML = links.map(p => `
+        <a href="${escapeAttr(settings[p.key])}" target="_blank" rel="noopener">
+          <span class="icon-circle">${p.icon}</span> ${p.label}
+        </a>`).join("");
+    }
+  }
+
+  document.getElementById("sortSelect").addEventListener("change", renderCars);
+
+  loadData();
+</script>
+
+</body>
+</html>
