@@ -171,19 +171,13 @@
       </div>
 
       <div class="field">
-        <label>Photo links (up to 4, optional)</label>
+        <label>Photos (up to 4)</label>
       </div>
-      <div class="field">
-        <input type="text" id="photoUrl1" placeholder="Photo 1 link (e.g. from imgur)">
-      </div>
-      <div class="field">
-        <input type="text" id="photoUrl2" placeholder="Photo 2 link (optional)">
-      </div>
-      <div class="field">
-        <input type="text" id="photoUrl3" placeholder="Photo 3 link (optional)">
-      </div>
-      <div class="field">
-        <input type="text" id="photoUrl4" placeholder="Photo 4 link (optional)">
+      <div class="photo-inputs" id="photoInputs">
+        <div class="photo-slot" data-slot="0">+ Photo 1<input type="file" accept="image/*" data-slot="0"></div>
+        <div class="photo-slot" data-slot="1">+ Photo 2<input type="file" accept="image/*" data-slot="1"></div>
+        <div class="photo-slot" data-slot="2">+ Photo 3<input type="file" accept="image/*" data-slot="2"></div>
+        <div class="photo-slot" data-slot="3">+ Photo 4<input type="file" accept="image/*" data-slot="3"></div>
       </div>
 
       <div id="addCarStatus" class="status-msg"></div>
@@ -383,6 +377,47 @@
     }
   }
 
+  // ---------- PHOTO INPUTS ----------
+  const photoData = [null,null,null,null];
+
+  function resizeImage(file){
+    return new Promise((resolve, reject)=>{
+      const reader = new FileReader();
+      reader.onload = (e)=>{
+        const img = new Image();
+        img.onload = ()=>{
+          const maxW = 1000;
+          const scale = Math.min(1, maxW / img.width);
+          const canvas = document.createElement("canvas");
+          canvas.width = img.width * scale;
+          canvas.height = img.height * scale;
+          const ctx = canvas.getContext("2d");
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          resolve(canvas.toDataURL("image/jpeg", 0.72));
+        };
+        img.onerror = reject;
+        img.src = e.target.result;
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+
+  function wirePhotoSlot(slotEl, i){
+    const input = slotEl.querySelector('input[type="file"]');
+    input.addEventListener("change", async (e)=>{
+      const file = e.target.files[0];
+      if(!file) return;
+      const dataUrl = await resizeImage(file);
+      photoData[i] = dataUrl;
+      slotEl.querySelectorAll("img").forEach(img=>img.remove());
+      const img = document.createElement("img");
+      img.src = dataUrl;
+      slotEl.appendChild(img);
+    });
+  }
+  document.querySelectorAll(".photo-slot").forEach((slotEl,i)=> wirePhotoSlot(slotEl, i));
+
   // ---------- ADD CAR ----------
   document.getElementById("addCarBtn").addEventListener("click", async ()=>{
     const title = document.getElementById("mTitle").value.trim();
@@ -392,12 +427,7 @@
       return;
     }
     showStatus("addCarStatus", "loading", "Posting...");
-    const photos = [
-      document.getElementById("photoUrl1").value.trim(),
-      document.getElementById("photoUrl2").value.trim(),
-      document.getElementById("photoUrl3").value.trim(),
-      document.getElementById("photoUrl4").value.trim()
-    ].filter(Boolean);
+    const photos = photoData.filter(Boolean);
     const result = await postAction({
       action:"addCar",
       title, price,
@@ -412,10 +442,12 @@
       document.getElementById("mPrice").value = "";
       document.getElementById("mMiles").value = "";
       document.getElementById("mBadge").value = "";
-      document.getElementById("photoUrl1").value = "";
-      document.getElementById("photoUrl2").value = "";
-      document.getElementById("photoUrl3").value = "";
-      document.getElementById("photoUrl4").value = "";
+      for(let i=0;i<4;i++){ photoData[i] = null; }
+      document.querySelectorAll(".photo-slot").forEach((slotEl,i)=>{
+        slotEl.querySelectorAll("img").forEach(img=>img.remove());
+        slotEl.innerHTML = `+ Photo ${i+1}<input type="file" accept="image/*" data-slot="${i}">`;
+        wirePhotoSlot(slotEl, i);
+      });
       await refreshData();
     }else{
       showStatus("addCarStatus", "err", result.error || "Something went wrong. Check the access code and try again.");
