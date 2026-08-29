@@ -200,6 +200,10 @@
         <input type="tel" id="sPhone" placeholder="(000) 000-0000">
       </div>
       <div class="field">
+        <label for="sLicense">Dealer license number</label>
+        <input type="text" id="sLicense" placeholder="e.g. DL-123456">
+      </div>
+      <div class="field">
         <label for="sFollowers">Follower count (shown on homepage)</label>
         <input type="text" id="sFollowers" placeholder="e.g. 1.1K">
       </div>
@@ -330,6 +334,7 @@
     const s = cachedData.settings || {};
     document.getElementById("sEmail").value = s.email || "";
     document.getElementById("sPhone").value = s.phone || "";
+    document.getElementById("sLicense").value = s.license || "";
     document.getElementById("sFollowers").value = s.followers || "";
     document.getElementById("sFacebook").value = s.facebook || "";
     document.getElementById("sInstagram").value = s.instagram || "";
@@ -462,6 +467,7 @@
       settings:{
         email: document.getElementById("sEmail").value.trim(),
         phone: document.getElementById("sPhone").value.trim(),
+        license: document.getElementById("sLicense").value.trim(),
         followers: document.getElementById("sFollowers").value.trim(),
         facebook: document.getElementById("sFacebook").value.trim(),
         instagram: document.getElementById("sInstagram").value.trim(),
