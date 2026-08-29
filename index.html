@@ -726,7 +726,7 @@
 <footer>
   <div class="wrap footer-inner">
     <div class="brand-foot">Cheap Cars for Sale Under $1500</div>
-    <div>© 2026 · Managed via the dealer dashboard</div>
+    <div id="licenseNote">© 2026 · Managed via the dealer dashboard</div>
   </div>
 </footer>
 
@@ -868,6 +868,10 @@
     if(settings.followers){
       const stat = document.getElementById("followerStat");
       if(stat) stat.textContent = settings.followers;
+    }
+    if(settings.license){
+      const note = document.getElementById("licenseNote");
+      if(note) note.textContent = "© 2026 · Licensed Dealer #" + settings.license;
     }
 
     const socialWrap = document.getElementById("socialLinks");
