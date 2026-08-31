@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Manage — Cheap Cars for Sale Under $1500</title>
+<title>Manage — Cheap Cars for Sale</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=IBM+Plex+Mono:wght@500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -117,6 +117,17 @@
 
   .section-title{font-size:16px; font-weight:700; margin-bottom:14px;}
   .helper{font-size:12.5px; color:var(--chrome); margin-top:-8px; margin-bottom:16px; line-height:1.5;}
+  .preview-box{
+    background:var(--paper-dim);
+    border:1px dashed #D9D5C8;
+    border-radius:var(--radius);
+    padding:14px;
+    font-size:13.5px;
+    line-height:1.6;
+    color:#3d3d3d;
+  }
+  .preview-box p{margin-bottom:10px;}
+  .preview-box p:last-child{margin-bottom:0;}
 </style>
 </head>
 <body>
@@ -165,9 +176,44 @@
           <select id="mTrans"><option>Automatic</option><option>Manual</option></select>
         </div>
         <div class="field">
-          <label for="mBadge">Badge tag</label>
-          <input type="text" id="mBadge" placeholder="Just In / Low Miles">
+          <label for="mCondition">Condition</label>
+          <select id="mCondition"><option>Excellent</option><option>Very Good</option><option>Good</option></select>
         </div>
+      </div>
+      <div class="field">
+        <label for="mBadge">Badge tag</label>
+        <input type="text" id="mBadge" placeholder="Just In / Low Miles">
+      </div>
+      <div class="field" style="display:flex; align-items:center; gap:10px;">
+        <input type="checkbox" id="mGuarantee" checked style="width:auto; margin:0;">
+        <label for="mGuarantee" style="margin:0; text-transform:none; font-size:14px; font-weight:600; color:var(--ink);">Includes 90-day guarantee</label>
+      </div>
+
+      <div class="section-title" style="margin-top:6px;">Extra details (optional)</div>
+      <p class="helper">Shown under "View Details" on the listing — leave blank to skip any of these.</p>
+      <div class="row2">
+        <div class="field">
+          <label for="mVin">VIN</label>
+          <input type="text" id="mVin" placeholder="e.g. WBACB4324SFM08381">
+        </div>
+        <div class="field">
+          <label for="mEngine">Engine</label>
+          <input type="text" id="mEngine" placeholder="e.g. 2.5L I4">
+        </div>
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label for="mDrivetrain">Drivetrain</label>
+          <input type="text" id="mDrivetrain" placeholder="e.g. FWD, AWD, RWD">
+        </div>
+        <div class="field">
+          <label for="mTitleStatus">Title status</label>
+          <input type="text" id="mTitleStatus" placeholder="e.g. Clean title">
+        </div>
+      </div>
+      <div class="field">
+        <label for="mDescription">Description</label>
+        <textarea id="mDescription" placeholder="Anything else a buyer should know about this car"></textarea>
       </div>
 
       <div class="field">
@@ -190,6 +236,13 @@
     </div>
 
     <div class="panel" id="panel-settings">
+      <div class="section-title">Profile photo / logo</div>
+      <p class="helper">Shown next to your business name at the top of the site.</p>
+      <div class="photo-slot" id="profilePhotoSlot" style="width:100px; height:100px; border-radius:50%; margin-bottom:20px;">
+        + Photo
+        <input type="file" accept="image/*" id="mProfilePhoto">
+      </div>
+
       <div class="section-title">Contact &amp; social</div>
       <div class="field">
         <label for="sEmail">Email</label>
@@ -202,6 +255,22 @@
       <div class="field">
         <label for="sLicense">Dealer license number</label>
         <input type="text" id="sLicense" placeholder="e.g. DL-123456">
+      </div>
+      <div class="field">
+        <label for="sAddress">Business address</label>
+        <input type="text" id="sAddress" placeholder="e.g. 123 Main St, City, State">
+      </div>
+      <div class="field">
+        <label for="sHoursWeek">Hours — Mon–Fri</label>
+        <input type="text" id="sHoursWeek" placeholder="e.g. 9:00 AM – 7:00 PM">
+      </div>
+      <div class="field">
+        <label for="sHoursSat">Hours — Saturday</label>
+        <input type="text" id="sHoursSat" placeholder="e.g. 9:00 AM – 5:00 PM">
+      </div>
+      <div class="field">
+        <label for="sHoursSun">Hours — Sunday</label>
+        <input type="text" id="sHoursSun" placeholder="e.g. By appointment">
       </div>
       <div class="field">
         <label for="sFollowers">Follower count (shown on homepage)</label>
@@ -219,6 +288,27 @@
         <label for="sTiktok">TikTok link (optional)</label>
         <input type="text" id="sTiktok" placeholder="https://tiktok.com/@...">
       </div>
+
+      <div class="section-title" style="margin-top:20px;">Financing page</div>
+      <p class="helper">This text appears in the "How It Works" / Financing section on your site. Write it in your own words — customers will read this before contacting you. Tip: to show separate cards (like "Appointments Required"), write a short title, then the details below it, then leave a blank line before the next point.</p>
+      <div class="field">
+        <textarea id="sFinancingInfo" placeholder="Vehicle Viewings&#10;All viewings are welcome anytime during business hours, no appointment needed.&#10;&#10;Financing Options&#10;We offer in-house financing for all credit types — ask us for details." style="min-height:140px;"></textarea>
+      </div>
+      <div class="field">
+        <label>Live preview</label>
+        <div class="preview-box" id="financingPreview"><p class="helper" style="margin:0;">Start typing above to see a preview here.</p></div>
+      </div>
+
+      <div class="section-title" style="margin-top:20px;">Buying policy page</div>
+      <p class="helper">Your own terms for viewing, test-driving, and buying a vehicle. This shows on its own section on the site — write it honestly, in your own words. Tip: to show separate cards, write a short title, then the details below it, then leave a blank line before the next point.</p>
+      <div class="field">
+        <textarea id="sPolicyInfo" placeholder="Vehicle Condition&#10;All vehicles are sold as-is unless a warranty is noted on the listing.&#10;&#10;Test Drives Welcome&#10;Every buyer is welcome to see and test-drive a vehicle before any payment or paperwork." style="min-height:140px;"></textarea>
+      </div>
+      <div class="field">
+        <label>Live preview</label>
+        <div class="preview-box" id="policyPreview"><p class="helper" style="margin:0;">Start typing above to see a preview here.</p></div>
+      </div>
+
       <div id="settingsStatus" class="status-msg"></div>
       <button class="btn btn-primary" id="saveSettingsBtn">Save Changes</button>
     </div>
@@ -244,7 +334,7 @@
       <div id="addReviewStatus" class="status-msg"></div>
       <button class="btn btn-primary" id="addReviewBtn">Add Review</button>
 
-      <p class="helper" style="margin-top:20px;">Homepage shows the 9 most recent reviews.</p>
+      <p class="helper" style="margin-top:20px;">Homepage shows the 20 most recent reviews.</p>
       <div class="section-title">Existing reviews</div>
       <div id="reviewList"></div>
     </div>
@@ -310,17 +400,31 @@
       wrap.innerHTML = `<p class="helper">No vehicles posted yet.</p>`;
       return;
     }
-    wrap.innerHTML = cars.map(c => `
+    wrap.innerHTML = cars.map(c => {
+      const isSold = String(c.sold) === "true";
+      return `
       <div class="card">
         <div class="card-row">
           <div>
-            <b>${escapeHtml(c.title)}</b>
+            <b>${escapeHtml(c.title)} ${isSold ? '<span style="color:var(--red);">— SOLD</span>' : ""}</b>
             <span>$${Number(c.price).toLocaleString()} · ${escapeHtml(c.miles)}</span>
           </div>
-          <button class="btn btn-danger" data-id="${escapeHtml(c.id)}">Remove</button>
+          <div style="display:flex; gap:6px; flex-shrink:0;">
+            <button class="btn btn-outline sold-toggle" data-id="${escapeHtml(c.id)}" data-sold="${isSold}" style="width:auto; font-size:12px; padding:8px 10px;">${isSold ? "Mark Available" : "Mark Sold"}</button>
+            <button class="btn btn-danger" data-id="${escapeHtml(c.id)}">Remove</button>
+          </div>
         </div>
       </div>
-    `).join("");
+    `;
+    }).join("");
+    wrap.querySelectorAll(".sold-toggle").forEach(btn=>{
+      btn.addEventListener("click", async ()=>{
+        const currentlySold = btn.getAttribute("data-sold") === "true";
+        btn.textContent = "Updating...";
+        await postAction({action:"setSoldStatus", id: btn.getAttribute("data-id"), sold: !currentlySold});
+        await refreshData();
+      });
+    });
     wrap.querySelectorAll(".btn-danger").forEach(btn=>{
       btn.addEventListener("click", async ()=>{
         btn.textContent = "Removing...";
@@ -335,11 +439,61 @@
     document.getElementById("sEmail").value = s.email || "";
     document.getElementById("sPhone").value = s.phone || "";
     document.getElementById("sLicense").value = s.license || "";
+    document.getElementById("sAddress").value = s.address || "";
+    document.getElementById("sHoursWeek").value = s.hoursWeek || "";
+    document.getElementById("sHoursSat").value = s.hoursSat || "";
+    document.getElementById("sHoursSun").value = s.hoursSun || "";
     document.getElementById("sFollowers").value = s.followers || "";
     document.getElementById("sFacebook").value = s.facebook || "";
     document.getElementById("sInstagram").value = s.instagram || "";
     document.getElementById("sTiktok").value = s.tiktok || "";
+    document.getElementById("sFinancingInfo").value = s.financingInfo || "";
+    document.getElementById("sPolicyInfo").value = s.policyInfo || "";
+    updatePreview("sFinancingInfo", "financingPreview");
+    updatePreview("sPolicyInfo", "policyPreview");
+    if(s.profilePhoto){
+      const slot = document.getElementById("profilePhotoSlot");
+      slot.querySelectorAll("img").forEach(img=>img.remove());
+      const img = document.createElement("img");
+      img.src = s.profilePhoto;
+      slot.appendChild(img);
+      slot.appendChild(document.getElementById("mProfilePhoto"));
+    }
   }
+
+  function escapeHtmlPreview(s){ return String(s || "").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+  function updatePreview(textareaId, previewId){
+    const textarea = document.getElementById(textareaId);
+    const preview = document.getElementById(previewId);
+    if(!textarea || !preview) return;
+    const val = textarea.value.trim();
+    if(!val){
+      preview.innerHTML = `<p class="helper" style="margin:0;">Start typing above to see a preview here.</p>`;
+      return;
+    }
+    const blocks = val.split(/\n\s*\n/).map(b => b.trim()).filter(Boolean);
+    if(blocks.length <= 1){
+      preview.innerHTML = val
+        .split(/\n+/)
+        .filter(line => line.trim())
+        .map(line => `<p>${escapeHtmlPreview(line)}</p>`)
+        .join("");
+      return;
+    }
+    preview.innerHTML = blocks.map(block => {
+      const lines = block.split(/\n+/).map(l => l.trim()).filter(Boolean);
+      const title = lines[0] || "";
+      const desc = lines.slice(1).join(" ");
+      return `<div style="margin-bottom:10px; padding-bottom:10px; border-bottom:1px dashed #D9D5C8;">
+        <b style="display:block; font-size:13.5px; margin-bottom:3px;">✓ ${escapeHtmlPreview(title)}</b>
+        ${desc ? `<span style="font-size:13px; color:#5b5b5b;">${escapeHtmlPreview(desc)}</span>` : ""}
+      </div>`;
+    }).join("");
+  }
+
+  document.getElementById("sFinancingInfo").addEventListener("input", ()=> updatePreview("sFinancingInfo", "financingPreview"));
+  document.getElementById("sPolicyInfo").addEventListener("input", ()=> updatePreview("sPolicyInfo", "policyPreview"));
 
   function renderReviewList(){
     const wrap = document.getElementById("reviewList");
@@ -423,6 +577,21 @@
   }
   document.querySelectorAll(".photo-slot").forEach((slotEl,i)=> wirePhotoSlot(slotEl, i));
 
+  let profilePhotoData = null;
+  const profileSlot = document.getElementById("profilePhotoSlot");
+  const profileInput = document.getElementById("mProfilePhoto");
+  profileInput.addEventListener("change", async (e)=>{
+    const file = e.target.files[0];
+    if(!file) return;
+    const dataUrl = await resizeImage(file);
+    profilePhotoData = dataUrl;
+    profileSlot.querySelectorAll("img").forEach(img=>img.remove());
+    const img = document.createElement("img");
+    img.src = dataUrl;
+    profileSlot.appendChild(img);
+    profileSlot.appendChild(profileInput);
+  });
+
   // ---------- ADD CAR ----------
   document.getElementById("addCarBtn").addEventListener("click", async ()=>{
     const title = document.getElementById("mTitle").value.trim();
@@ -438,7 +607,14 @@
       title, price,
       miles: document.getElementById("mMiles").value.trim(),
       trans: document.getElementById("mTrans").value,
+      condition: document.getElementById("mCondition").value,
       badge: document.getElementById("mBadge").value.trim(),
+      guarantee90: document.getElementById("mGuarantee").checked,
+      vin: document.getElementById("mVin").value.trim(),
+      engine: document.getElementById("mEngine").value.trim(),
+      drivetrain: document.getElementById("mDrivetrain").value.trim(),
+      titlestatus: document.getElementById("mTitleStatus").value.trim(),
+      description: document.getElementById("mDescription").value.trim(),
       photos
     });
     if(result.ok){
@@ -447,6 +623,11 @@
       document.getElementById("mPrice").value = "";
       document.getElementById("mMiles").value = "";
       document.getElementById("mBadge").value = "";
+      document.getElementById("mVin").value = "";
+      document.getElementById("mEngine").value = "";
+      document.getElementById("mDrivetrain").value = "";
+      document.getElementById("mTitleStatus").value = "";
+      document.getElementById("mDescription").value = "";
       for(let i=0;i<4;i++){ photoData[i] = null; }
       document.querySelectorAll(".photo-slot").forEach((slotEl,i)=>{
         slotEl.querySelectorAll("img").forEach(img=>img.remove());
@@ -462,17 +643,25 @@
   // ---------- SAVE SETTINGS ----------
   document.getElementById("saveSettingsBtn").addEventListener("click", async ()=>{
     showStatus("settingsStatus", "loading", "Saving...");
+    const settingsPayload = {
+      email: document.getElementById("sEmail").value.trim(),
+      phone: document.getElementById("sPhone").value.trim(),
+      license: document.getElementById("sLicense").value.trim(),
+      address: document.getElementById("sAddress").value.trim(),
+      hoursWeek: document.getElementById("sHoursWeek").value.trim(),
+      hoursSat: document.getElementById("sHoursSat").value.trim(),
+      hoursSun: document.getElementById("sHoursSun").value.trim(),
+      followers: document.getElementById("sFollowers").value.trim(),
+      facebook: document.getElementById("sFacebook").value.trim(),
+      instagram: document.getElementById("sInstagram").value.trim(),
+      tiktok: document.getElementById("sTiktok").value.trim(),
+      financingInfo: document.getElementById("sFinancingInfo").value.trim(),
+      policyInfo: document.getElementById("sPolicyInfo").value.trim()
+    };
+    if(profilePhotoData) settingsPayload.profilePhoto = profilePhotoData;
     const result = await postAction({
       action:"updateSettings",
-      settings:{
-        email: document.getElementById("sEmail").value.trim(),
-        phone: document.getElementById("sPhone").value.trim(),
-        license: document.getElementById("sLicense").value.trim(),
-        followers: document.getElementById("sFollowers").value.trim(),
-        facebook: document.getElementById("sFacebook").value.trim(),
-        instagram: document.getElementById("sInstagram").value.trim(),
-        tiktok: document.getElementById("sTiktok").value.trim()
-      }
+      settings: settingsPayload
     });
     if(result.ok){
       showStatus("settingsStatus", "ok", "Saved! Changes will show on the site shortly.");
