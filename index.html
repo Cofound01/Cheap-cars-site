@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cheap Cars for Sale Under $1500</title>
+<title>Cheap Cars for Sale</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=IBM+Plex+Mono:wght@500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -381,12 +381,229 @@
     border-radius:2px;
   }
   .sticker-cta:hover{background:var(--red); color:#fff;}
+  .sticker-btn-row{display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-top:12px;}
+  .sticker-btn-row .sticker-cta{text-align:center;}
+  .sticker-cta.outline{color:var(--asphalt); border-color:#D9D5C8;}
+  .sticker-cta.outline:hover{background:var(--asphalt); border-color:var(--asphalt); color:#fff;}
+  .sold-ribbon{
+    position:absolute; inset:0;
+    background:rgba(27,27,29,0.55);
+    display:flex; align-items:center; justify-content:center;
+    z-index:5;
+  }
+  .sold-ribbon span{
+    background:var(--red);
+    color:#fff;
+    font-family:'Archivo Black', sans-serif;
+    font-size:20px;
+    letter-spacing:2px;
+    padding:8px 22px;
+    transform:rotate(-6deg);
+    box-shadow:0 6px 16px rgba(0,0,0,0.4);
+  }
+  .guarantee-tag{
+    display:inline-flex; align-items:center; gap:5px;
+    font-size:12px; font-weight:700; color:#2E6B33;
+    margin-bottom:8px;
+  }
+  .details-panel{
+    display:none;
+    padding:14px 16px;
+    background:var(--paper-dim);
+    border-top:1px dashed #D9D5C8;
+    font-size:13px;
+    line-height:1.6;
+  }
+  .details-panel.open{display:block;}
+  .details-row{display:flex; justify-content:space-between; padding:3px 0; border-bottom:1px solid #E3E0D4;}
+  .details-row span:first-child{color:var(--chrome); font-weight:600;}
+  .details-row span:last-child{font-family:'IBM Plex Mono', monospace; text-align:right;}
+  .details-desc{margin-top:10px; color:#3d3d3d;}
+  .guarantee-badge{
+    display:inline-flex; align-items:center; gap:5px;
+    background:#E7F3E5; color:#2E6B33;
+    font-size:11px; font-weight:700;
+    padding:4px 8px; border-radius:2px;
+    margin-bottom:8px;
+  }
+  .sold-ribbon{
+    position:absolute; inset:0;
+    background:rgba(27,27,29,0.55);
+    display:flex; align-items:center; justify-content:center;
+    z-index:2;
+  }
+  .sold-ribbon span{
+    background:var(--red); color:#fff;
+    font-family:'Archivo Black', sans-serif;
+    font-size:15px; letter-spacing:1px;
+    padding:8px 22px;
+    transform:rotate(-8deg);
+    box-shadow:0 4px 14px rgba(0,0,0,0.35);
+  }
+  .sticker-card.is-sold .sticker-photo{position:relative;}
+  .sticker-card.is-sold{opacity:0.82;}
+
+  /* ---------- INQUIRY MODAL ---------- */
+  .modal-overlay{
+    position:fixed; inset:0;
+    background:rgba(27,27,29,0.75);
+    z-index:300;
+    display:none;
+    align-items:flex-start;
+    justify-content:center;
+    overflow-y:auto;
+    padding:20px 14px 60px;
+  }
+  .modal-overlay.open{display:flex;}
+  .modal-panel{
+    background:#fff;
+    border-radius:var(--radius);
+    max-width:480px;
+    width:100%;
+    margin-top:16px;
+    overflow:hidden;
+  }
+  .modal-head{
+    background:var(--asphalt);
+    color:var(--paper);
+    padding:16px 20px;
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .modal-head h3{font-size:15px; font-family:'Archivo Black', sans-serif; text-transform:uppercase; letter-spacing:0.4px;}
+  .modal-close{
+    background:transparent; border:none; color:var(--paper);
+    font-size:20px; cursor:pointer; line-height:1; padding:4px 8px;
+  }
+  .modal-body{padding:20px;}
+  .modal-vehicle{
+    background:var(--paper-dim);
+    border:1px solid #E3E0D4;
+    border-radius:var(--radius);
+    padding:10px 14px;
+    font-size:13.5px;
+    font-weight:700;
+    margin-bottom:16px;
+  }
+
+  .financing-info{
+    background:#fff;
+    border:1px solid #E3E0D4;
+    border-radius:var(--radius);
+    padding:22px;
+    margin-top:20px;
+  }
+  .financing-info p{font-size:14.5px; line-height:1.65; color:#3d3d3d; margin-bottom:12px;}
+  .financing-info p:last-child{margin-bottom:0;}
 
   .inventory-note{
     margin-top:24px;
     font-size:13px;
     color:var(--chrome);
     text-align:center;
+  }
+
+  /* ---------- ABOUT / EXPERIENCE ---------- */
+  .about{
+    background:var(--paper-dim);
+    border-top:1px solid #E3E0D4;
+    border-bottom:1px solid #E3E0D4;
+  }
+  .about-shell{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:28px;
+    align-items:center;
+  }
+  @media(min-width:860px){
+    .about-shell{grid-template-columns:1.1fr 0.9fr;}
+  }
+  .about-badge{
+    display:inline-flex; align-items:center; gap:8px;
+    background:var(--asphalt);
+    color:var(--yellow);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px; font-weight:600;
+    padding:7px 12px;
+    border-radius:2px;
+    margin-bottom:16px;
+  }
+  .about h2{
+    font-size:clamp(24px, 5vw, 32px);
+    line-height:1.15;
+    margin-bottom:14px;
+  }
+  .about p{
+    font-size:15px;
+    line-height:1.65;
+    color:#3d3d3d;
+    max-width:52ch;
+  }
+  .about-stats{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:14px;
+  }
+  .about-stat{
+    background:#fff;
+    border:1px solid #E3E0D4;
+    border-radius:var(--radius);
+    padding:20px 14px;
+    text-align:center;
+    box-shadow:0 8px 20px -14px rgba(0,0,0,0.3);
+  }
+  .about-stat b{
+    display:block;
+    font-family:'Archivo Black', sans-serif;
+    font-size:28px;
+    color:var(--red);
+    margin-bottom:4px;
+  }
+  .about-stat span{
+    font-size:11.5px;
+    color:var(--chrome);
+    text-transform:uppercase;
+    letter-spacing:0.4px;
+  }
+
+  /* ---------- TRUST PILLARS ---------- */
+  .trust{background:var(--paper);}
+  .trust-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:18px;
+    margin-top:10px;
+  }
+  @media(min-width:760px){
+    .trust-grid{grid-template-columns:repeat(3, 1fr);}
+  }
+  .trust-card{
+    display:flex; gap:12px; align-items:flex-start;
+    background:#fff;
+    border:1px solid #E3E0D4;
+    border-radius:var(--radius);
+    padding:18px;
+  }
+  .trust-check{
+    flex-shrink:0;
+    width:26px; height:26px; border-radius:50%;
+    background:var(--yellow);
+    color:var(--asphalt);
+    display:flex; align-items:center; justify-content:center;
+    font-weight:700; font-size:14px;
+  }
+  .trust-card h3{font-size:15px; margin-bottom:5px;}
+  .trust-card p{font-size:13.5px; color:#5b5b5b; line-height:1.55;}
+
+  /* ---------- CONDITION BADGE ---------- */
+  .condition-tag{
+    display:inline-block;
+    background:#2E6B33;
+    color:#fff;
+    font-size:10.5px;
+    font-weight:700;
+    padding:3px 8px;
+    border-radius:2px;
+    margin-bottom:8px;
   }
 
   /* ---------- FINANCING / TRUST ---------- */
@@ -575,8 +792,49 @@
   footer{
     background:var(--asphalt);
     color:#9C9A92;
-    padding:28px 0;
+    padding:40px 0 24px;
     font-size:13px;
+  }
+  .footer-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:28px;
+    padding-bottom:26px;
+  }
+  @media(min-width:700px){
+    .footer-grid{grid-template-columns:1.2fr 1fr 1fr;}
+  }
+  .footer-col h4{
+    color:var(--paper);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    margin-bottom:14px;
+  }
+  .footer-col p{font-size:13px; line-height:1.6; color:#9C9A92; max-width:32ch;}
+  .footer-links{list-style:none;}
+  .footer-links li{margin-bottom:9px;}
+  .footer-links a{color:#C6C3B9; font-size:13.5px;}
+  .footer-links a:hover{color:var(--yellow);}
+  .footer-touch div{
+    display:flex; align-items:flex-start; gap:8px;
+    margin-bottom:10px;
+    font-size:13px;
+    color:#C6C3B9;
+    line-height:1.5;
+  }
+  .footer-touch a{color:#C6C3B9;}
+  .footer-touch a:hover{color:var(--yellow);}
+  .footer-hours-row{
+    display:flex; justify-content:space-between;
+    font-size:13px; padding:4px 0;
+    color:#C6C3B9;
+  }
+  .footer-hours-row span:first-child{color:#9C9A92;}
+  .footer-bottom{
+    border-top:1px solid #333336;
+    padding-top:18px;
   }
   .footer-inner{
     display:flex; flex-wrap:wrap; gap:10px;
@@ -594,7 +852,15 @@
 
 <header class="site-nav">
   <div class="nav-inner">
-    <div class="brand">Cheap Cars<br>for Sale <span>Under $1500</span></div>
+    <div style="display:flex; align-items:center; gap:10px;">
+      <img id="navProfilePhoto" src="" alt="" style="display:none; width:38px; height:38px; border-radius:50%; object-fit:cover; border:2px solid var(--yellow);">
+      <div>
+        <div class="brand">Cheap Cars<br>for Sale</div>
+        <div id="navBadge" style="display:none; align-items:center; gap:4px; font-size:10.5px; color:#8ADB8F; font-weight:600; margin-top:2px;">
+          <span>✓</span><span id="navBadgeText">Licensed Dealer</span>
+        </div>
+      </div>
+    </div>
     <div style="display:flex; gap:8px; align-items:center;">
       <a class="nav-manage" href="https://claude.ai/public/artifacts/1a61c591-f888-43df-a840-d69db7faef0e" style="text-decoration:none; display:inline-flex; align-items:center;" target="_blank" rel="noopener">⚙ Manage</a>
       <a class="nav-call" id="navCall" href="tel:+10000000000">Call Now</a>
@@ -615,6 +881,54 @@
       <div><b>10+</b><span>Years in the industry</span></div>
       <div><b id="followerStat">1.1K</b><span>Followers &amp; counting</span></div>
       <div><b>$1500</b><span>Starting under</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="section about">
+  <div class="wrap about-shell">
+    <div>
+      <span class="about-badge">✓ Licensed &amp; Experienced</span>
+      <h2>A decade in the driver's seat business.</h2>
+      <p>With over 10 years of experience in the automotive industry, we specialize in matching drivers with vehicles that fit both their lifestyle and their budget. We believe buying a car should be a success — not a gamble. Every vehicle on this lot is picked with that in mind.</p>
+    </div>
+    <div class="about-stats">
+      <div class="about-stat"><b>10+</b><span>Years in business</span></div>
+      <div class="about-stat" id="aboutFollowers"><b>1.1K</b><span>Followers &amp; growing</span></div>
+      <div class="about-stat"><b>★★★★★</b><span>Customer rated</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="section trust" id="about">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Why Buy From Us</span>
+      <h2>More than a sale — a commitment.</h2>
+      <p>We bring honesty and value to every car sale. When you buy from us, you're not just getting a car — you're getting a partner who wants you to drive away happy.</p>
+    </div>
+    <div class="trust-grid">
+      <div class="trust-card">
+        <div class="trust-check">✓</div>
+        <div>
+          <h3>Your Satisfaction is Our Success</h3>
+          <p>We hand-pick every vehicle for quality and reliability. Our goal is for you to drive away happy and confident.</p>
+        </div>
+      </div>
+      <div class="trust-card">
+        <div class="trust-check">✓</div>
+        <div>
+          <h3>Fair, Transparent Pricing</h3>
+          <p>By keeping overhead low, we offer great cars at prices that make sense for your budget — no hidden fees.</p>
+        </div>
+      </div>
+      <div class="trust-card">
+        <div class="trust-check">✓</div>
+        <div>
+          <h3>A Process Built on Trust</h3>
+          <p>From the first conversation to handing over the keys, expect transparency, fair dealing, and zero pressure. You always see and test drive the car before any payment.</p>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -642,7 +956,7 @@
   </div>
 </section>
 
-<section class="section financing">
+<section class="section financing" id="financing">
   <div class="wrap">
     <div class="section-head">
       <span class="eyebrow">How It Works</span>
@@ -665,6 +979,23 @@
         <p>Finish paperwork and get in the driver's seat the same day.</p>
       </div>
     </div>
+
+    <div class="financing-info" id="financingInfoBlock">
+      <p><strong>See it before you sign anything.</strong> Every car on this lot can be viewed and test-driven in person before any paperwork or payment — there's no fee to look, ask questions, or take it for a drive.</p>
+      <p>Financing details (rates, terms, and what's needed to qualify) are worked out directly with you, one on one, so you know exactly what you're signing before you sign it.</p>
+      <p>Questions about financing for a specific car? Use the Contact button on any listing, or reach out directly below.</p>
+    </div>
+  </div>
+
+</section>
+
+<section class="section" id="policy" style="display:none;">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Buying Policy</span>
+      <h2>Our terms for buying a vehicle</h2>
+    </div>
+    <div class="financing-info" id="policyInfoBlock"></div>
   </div>
 </section>
 
@@ -717,18 +1048,81 @@
           <textarea id="message" name="Message" placeholder="Ask about financing, availability, or a test drive..."></textarea>
         </div>
         <button type="submit" class="btn btn-primary" style="width:100%;">Send Inquiry</button>
-        <p class="form-note">This opens your email app to send the message directly.</p>
+        <p class="form-note">This opens your email app to send the message directly. Sending this form does not charge you or reserve the vehicle — we'll follow up to arrange next steps.</p>
       </form>
     </div>
   </div>
 </section>
 
 <footer>
-  <div class="wrap footer-inner">
-    <div class="brand-foot">Cheap Cars for Sale Under $1500</div>
-    <div id="licenseNote">© 2026 · Managed via the dealer dashboard</div>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>Cheap Cars for Sale</h4>
+        <p>Affordable used cars, trucks, and SUVs for sale. Quality pre-owned vehicles at honest prices with simple financing.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <ul class="footer-links">
+          <li><a href="#inventory">Inventory</a></li>
+          <li><a href="#financing">Financing</a></li>
+          <li id="policyLink" style="display:none;"><a href="#policy">Buying Policy</a></li>
+          <li><a href="#reviews">Reviews</a></li>
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Get In Touch</h4>
+        <div class="footer-touch">
+          <div id="footerPhone" style="display:none;"><span>📞</span> <a href="#" id="footerPhoneLink"></a></div>
+          <div id="footerEmail" style="display:none;"><span>✉️</span> <a href="#" id="footerEmailLink"></a></div>
+          <div id="footerAddress" style="display:none;"><span>📍</span> <span id="footerAddressText"></span></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="footerHoursBlock" style="display:none; border-top:1px solid #333336; padding-top:18px; margin-bottom:18px;">
+      <h4 style="color:var(--paper); font-family:'IBM Plex Mono', monospace; font-size:12px; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px;">Hours</h4>
+      <div id="footerHoursWeek" class="footer-hours-row" style="display:none;"><span>Mon – Fri</span><span></span></div>
+      <div id="footerHoursSat" class="footer-hours-row" style="display:none;"><span>Saturday</span><span></span></div>
+      <div id="footerHoursSun" class="footer-hours-row" style="display:none;"><span>Sunday</span><span></span></div>
+    </div>
+
+    <div class="footer-bottom footer-inner">
+      <div class="brand-foot">Cheap Cars for Sale</div>
+      <div id="licenseNote">© 2026 · Managed via the dealer dashboard</div>
+    </div>
   </div>
 </footer>
+
+<div class="modal-overlay" id="inquiryModal">
+  <div class="modal-panel">
+    <div class="modal-head">
+      <h3 id="modalTitle">Send an Inquiry</h3>
+      <button class="modal-close" id="closeInquiryModal" aria-label="Close">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-vehicle" id="modalVehicleLabel"></div>
+      <form class="inquiry" id="modalForm" method="post" enctype="text/plain">
+        <div class="field">
+          <label for="modalName">Name</label>
+          <input type="text" id="modalName" name="Name" required>
+        </div>
+        <div class="field">
+          <label for="modalPhone">Phone</label>
+          <input type="tel" id="modalPhone" name="Phone" required>
+        </div>
+        <div class="field">
+          <label for="modalMessage">Message</label>
+          <textarea id="modalMessage" name="Message"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%;">Send Inquiry</button>
+        <p class="form-note">This opens your email app to send the message directly. Sending this form does not charge you or reserve the vehicle — we'll follow up to arrange next steps.</p>
+      </form>
+    </div>
+  </div>
+</div>
 
 <script>
   // ---------- APPS SCRIPT BACKEND ----------
@@ -767,6 +1161,25 @@
   }
 
   function escapeHtml(s){ return String(s || "").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+  function openInquiryModal(carTitle, intent){
+    const titles = { contact: "Contact About This Car", reserve: "Ask to Reserve", finance: "Ask About Financing" };
+    const messages = {
+      contact: "I'm interested in this vehicle — please contact me with next steps.",
+      reserve: "I'd like to ask about reserving this vehicle — please contact me so we can discuss and arrange about it.",
+      finance: "I'm interested in financing this vehicle — please contact me with financing options and what's needed to get started."
+    };
+    document.getElementById("modalTitle").textContent = titles[intent] || titles.contact;
+    document.getElementById("modalVehicleLabel").textContent = carTitle;
+    document.getElementById("modalMessage").value = messages[intent] || messages.contact;
+    document.getElementById("inquiryModal").classList.add("open");
+  }
+  document.getElementById("closeInquiryModal").addEventListener("click", ()=>{
+    document.getElementById("inquiryModal").classList.remove("open");
+  });
+  document.getElementById("inquiryModal").addEventListener("click", (e)=>{
+    if(e.target.id === "inquiryModal") document.getElementById("inquiryModal").classList.remove("open");
+  });
   function escapeAttr(s){ return escapeHtml(s); }
 
   function renderCars(){
@@ -781,6 +1194,8 @@
       const photos = [car.photo1, car.photo2, car.photo3, car.photo4].filter(Boolean);
       const mainPhoto = photos[0] || "";
       const cardId = "car_" + car.id;
+      const isSold = String(car.sold) === "true";
+      const hasGuarantee = String(car.guarantee90) === "true";
       const thumbs = photos.length > 1 ? `
         <div style="display:flex; gap:5px; padding:8px 8px 0;">
           ${photos.map((p,i) => `<img src="${escapeAttr(p)}" data-target="${cardId}" data-src="${escapeAttr(p)}" class="thumb-img" style="width:38px;height:38px;object-fit:cover;border-radius:2px;cursor:pointer;border:1.5px solid ${i===0?'var(--yellow)':'#E3E0D4'};">`).join("")}
@@ -789,22 +1204,42 @@
       return `
       <div class="sticker-card">
         <div class="sticker-photo" id="${cardId}">
-          ${car.badge ? `<span class="badge">${escapeHtml(car.badge)}</span>` : ""}
+          ${car.badge && !isSold ? `<span class="badge">${escapeHtml(car.badge)}</span>` : ""}
+          ${car.condition ? `<span class="badge" style="left:auto; right:10px; background:var(--asphalt);">${escapeHtml(car.condition)}</span>` : ""}
           ${mainPhoto
             ? `<img src="${escapeAttr(mainPhoto)}" alt="${escapeAttr(car.title)}" style="width:100%;height:100%;object-fit:cover;">`
             : carSvg}
+          ${isSold ? `<div class="sold-ribbon"><span>SOLD</span></div>` : ""}
         </div>
         ${thumbs}
         <div class="sticker-body">
           <h3>${escapeHtml(car.title)}</h3>
+          ${hasGuarantee ? `<div class="guarantee-tag">✓ 90-Day Guarantee</div>` : ""}
           <div class="sticker-meta">
             <span class="mono">${escapeHtml(car.miles)}</span>
             <span class="mono">${escapeHtml(car.trans)}</span>
           </div>
           <div class="sticker-price-row">
             <div class="sticker-price"><sup>$</sup>${Number(car.price).toLocaleString()}</div>
-            <a class="sticker-cta" href="#contact">Inquire</a>
           </div>
+          <div class="sticker-btn-row">
+            <a class="sticker-cta outline" href="#" onclick="toggleDetails('${cardId}_details'); return false;">View Details</a>
+            ${isSold
+              ? `<span class="sticker-cta" style="text-align:center; opacity:0.5; cursor:not-allowed; border-color:var(--chrome); color:var(--chrome);">Sold</span>`
+              : `<a class="sticker-cta" href="#" onclick="openInquiryModal('${escapeAttr(car.title)}','contact'); return false;">Contact</a>`}
+            ${!isSold ? `
+            <a class="sticker-cta outline" href="#" onclick="openInquiryModal('${escapeAttr(car.title)}','reserve'); return false;">Ask to Reserve</a>
+            <a class="sticker-cta outline" href="#" onclick="openInquiryModal('${escapeAttr(car.title)}','finance'); return false;">Ask About Financing</a>
+            ` : ""}
+          </div>
+        </div>
+        <div class="details-panel" id="${cardId}_details">
+          ${car.vin ? `<div class="details-row"><span>VIN</span><span>${escapeHtml(car.vin)}</span></div>` : ""}
+          ${car.engine ? `<div class="details-row"><span>Engine</span><span>${escapeHtml(car.engine)}</span></div>` : ""}
+          ${car.drivetrain ? `<div class="details-row"><span>Drivetrain</span><span>${escapeHtml(car.drivetrain)}</span></div>` : ""}
+          ${car.titlestatus ? `<div class="details-row"><span>Title</span><span>${escapeHtml(car.titlestatus)}</span></div>` : ""}
+          ${car.description ? `<p class="details-desc">${escapeHtml(car.description)}</p>` : ""}
+          ${!car.vin && !car.engine && !car.drivetrain && !car.titlestatus && !car.description ? `<p style="color:var(--chrome);">No additional details added for this vehicle yet — call or message to ask.</p>` : ""}
         </div>
       </div>
     `;
@@ -822,6 +1257,11 @@
         img.style.borderColor = "var(--yellow)";
       });
     });
+  }
+
+  function toggleDetails(id){
+    const el = document.getElementById(id);
+    if(el) el.classList.toggle("open");
   }
 
   function renderReviews(){
@@ -851,12 +1291,48 @@
     }).join("");
   }
 
+  function renderInfoCards(containerId, rawText){
+    const container = document.getElementById(containerId);
+    if(!container) return;
+    const blocks = String(rawText)
+      .split(/\n\s*\n/)
+      .map(b => b.trim())
+      .filter(Boolean);
+
+    if(blocks.length <= 1){
+      container.className = "financing-info";
+      container.innerHTML = String(rawText)
+        .split(/\n+/)
+        .filter(line => line.trim())
+        .map(line => `<p>${escapeHtml(line)}</p>`)
+        .join("");
+      return;
+    }
+
+    container.className = "trust-grid";
+    container.innerHTML = blocks.map(block => {
+      const lines = block.split(/\n+/).map(l => l.trim()).filter(Boolean);
+      const title = lines[0] || "";
+      const desc = lines.slice(1).join(" ");
+      return `
+        <div class="trust-card">
+          <div class="trust-check">✓</div>
+          <div>
+            <h3>${escapeHtml(title)}</h3>
+            ${desc ? `<p>${escapeHtml(desc)}</p>` : ""}
+          </div>
+        </div>`;
+    }).join("");
+  }
+
   function applySettings(){
     if(settings.email){
       const link = document.getElementById("emailLink");
       if(link){ link.href = "mailto:" + settings.email; link.innerHTML = `<span class="icon-circle">✉️</span> ${escapeHtml(settings.email)}`; }
       const form = document.getElementById("inquiryForm");
       if(form) form.action = "mailto:" + settings.email;
+      const modalForm = document.getElementById("modalForm");
+      if(modalForm) modalForm.action = "mailto:" + settings.email;
     }
     if(settings.phone){
       const link = document.getElementById("phoneLink");
@@ -868,10 +1344,70 @@
     if(settings.followers){
       const stat = document.getElementById("followerStat");
       if(stat) stat.textContent = settings.followers;
+      const aboutStat = document.getElementById("aboutFollowers");
+      if(aboutStat) aboutStat.querySelector("b").textContent = settings.followers;
     }
     if(settings.license){
       const note = document.getElementById("licenseNote");
       if(note) note.textContent = "© 2026 · Licensed Dealer #" + settings.license;
+      const navBadge = document.getElementById("navBadge");
+      if(navBadge) navBadge.style.display = "flex";
+    }
+    if(settings.profilePhoto){
+      const navPhoto = document.getElementById("navProfilePhoto");
+      if(navPhoto){ navPhoto.src = settings.profilePhoto; navPhoto.style.display = "block"; }
+    }
+    if(settings.financingInfo){
+      renderInfoCards("financingInfoBlock", settings.financingInfo);
+    }
+    if(settings.policyInfo){
+      const policySection = document.getElementById("policy");
+      renderInfoCards("policyInfoBlock", settings.policyInfo);
+      if(policySection) policySection.style.display = "block";
+      const policyLink = document.getElementById("policyLink");
+      if(policyLink) policyLink.style.display = "block";
+    }
+    if(settings.phone){
+      const fPhone = document.getElementById("footerPhone");
+      const fPhoneLink = document.getElementById("footerPhoneLink");
+      if(fPhone && fPhoneLink){
+        fPhone.style.display = "flex";
+        fPhoneLink.href = "tel:" + String(settings.phone).replace(/[^0-9+]/g, "");
+        fPhoneLink.textContent = settings.phone;
+      }
+    }
+    if(settings.email){
+      const fEmail = document.getElementById("footerEmail");
+      const fEmailLink = document.getElementById("footerEmailLink");
+      if(fEmail && fEmailLink){
+        fEmail.style.display = "flex";
+        fEmailLink.href = "mailto:" + settings.email;
+        fEmailLink.textContent = settings.email;
+      }
+    }
+    if(settings.address){
+      const fAddr = document.getElementById("footerAddress");
+      const fAddrText = document.getElementById("footerAddressText");
+      if(fAddr && fAddrText){
+        fAddr.style.display = "flex";
+        fAddrText.textContent = settings.address;
+      }
+    }
+    if(settings.hoursWeek || settings.hoursSat || settings.hoursSun){
+      const block = document.getElementById("footerHoursBlock");
+      if(block) block.style.display = "block";
+      if(settings.hoursWeek){
+        const row = document.getElementById("footerHoursWeek");
+        if(row){ row.style.display = "flex"; row.querySelector("span:last-child").textContent = settings.hoursWeek; }
+      }
+      if(settings.hoursSat){
+        const row = document.getElementById("footerHoursSat");
+        if(row){ row.style.display = "flex"; row.querySelector("span:last-child").textContent = settings.hoursSat; }
+      }
+      if(settings.hoursSun){
+        const row = document.getElementById("footerHoursSun");
+        if(row){ row.style.display = "flex"; row.querySelector("span:last-child").textContent = settings.hoursSun; }
+      }
     }
 
     const socialWrap = document.getElementById("socialLinks");
