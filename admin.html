@@ -421,7 +421,10 @@
       btn.addEventListener("click", async ()=>{
         const currentlySold = btn.getAttribute("data-sold") === "true";
         btn.textContent = "Updating...";
-        await postAction({action:"setSoldStatus", id: btn.getAttribute("data-id"), sold: !currentlySold});
+        const result = await postAction({action:"setSoldStatus", id: btn.getAttribute("data-id"), sold: !currentlySold});
+        if(!result.ok){
+          alert("Couldn't update: " + (result.error || "unknown error") + "\n\nMake sure the Apps Script backend has been redeployed with the latest code.");
+        }
         await refreshData();
       });
     });
